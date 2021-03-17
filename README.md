@@ -17,3 +17,13 @@
         rendered the snake.
     - snake.go                    
         set up movement parameters for the snake.
+#### 18-03-2021
+- pkg
+    - game-state.go                    
+        added keyboard events.
+    - render.go                    
+        added additional info.
+    - snake.go                    
+        derectionalised movements of snake.
+    - keyboard.go                    
+        to get real-time keyboard inputs with [This Library](github.com/eiannone/keyboard).

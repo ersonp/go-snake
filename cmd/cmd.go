@@ -27,7 +27,6 @@ func readInt(measurement string) int {
 
 // GetBoardSize is to get the width and height from the user
 func GetBoardSize() (int, int) {
-	fmt.Println("Go-Snake")
 	height := readInt("height")
 	width := readInt("width")
 	return height, width

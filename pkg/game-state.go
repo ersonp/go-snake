@@ -7,6 +7,10 @@ import (
 	"github.com/ersonp/go-snake/cmd"
 )
 
+var (
+	keyboardEventsChan = make(chan keyboardEvent)
+)
+
 type GameState struct {
 	board  *board
 	score  int
@@ -54,16 +58,35 @@ func (g *GameState) moveInterval() time.Duration {
 	return time.Duration(ms) * time.Millisecond
 }
 
+func (g *GameState) retry(h, w int) {
+	g.board = initialBoard(h, w)
+	g.score = initialScore()
+}
+
 func (g *GameState) Start() {
+	go listenToKeyboard(keyboardEventsChan)
 	for {
-		if err := g.board.moveSnake(); err != nil {
-			g.IsOver = true
+		select {
+		case e := <-keyboardEventsChan:
+			switch e.eventType {
+			case MOVE:
+				d := keyToDirection(e.key)
+				g.board.snake.changeDirection(d)
+			case RETRY:
+				g.retry(g.board.height, g.board.width)
+			case END:
+				break
+			}
+		default:
+			if err := g.board.moveSnake(); err != nil {
+				g.IsOver = true
+			}
+			time.Sleep(g.moveInterval())
+
 		}
 		cmd.CallClear()
 		if err := g.render(); err != nil {
 			panic(err)
 		}
-
-		time.Sleep(g.moveInterval())
 	}
 }

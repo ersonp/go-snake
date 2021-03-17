@@ -54,3 +54,16 @@ func (s *snake) move() error {
 
 	return nil
 }
+
+func (s *snake) changeDirection(d direction) {
+	opposites := map[direction]direction{
+		RIGHT: LEFT,
+		LEFT:  RIGHT,
+		UP:    DOWN,
+		DOWN:  UP,
+	}
+
+	if o := opposites[d]; o != 0 && o != s.direction {
+		s.direction = d
+	}
+}
