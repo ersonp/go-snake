@@ -5,19 +5,29 @@ import (
 	"time"
 )
 
-type board struct {
-	height     int
-	width      int
-	pointsChan chan (int)
+type coord struct {
+	x, y int
 }
 
-func newBoard(p chan (int), h, w int) *board {
+type board struct {
+	snake  *snake
+	height int
+	width  int
+}
+
+func newBoard(s *snake, h, w int) *board {
 	rand.Seed(time.Now().UnixNano())
 
 	a := &board{
-		height:     h,
-		width:      w,
-		pointsChan: p,
+		snake:  s,
+		height: h,
+		width:  w,
 	}
 	return a
+}
+func (a *board) moveSnake() error {
+	if err := a.snake.move(); err != nil {
+		return err
+	}
+	return nil
 }
