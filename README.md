@@ -2,7 +2,7 @@
 
 Terminal-based Snake game in GO
 
-![Imgur](https://imgur.com/JlPDudF)
+![Screenshot](https://i.imgur.com/JlPDudF.gif)
 
 ## Play
 
