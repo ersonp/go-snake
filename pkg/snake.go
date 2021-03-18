@@ -1,5 +1,9 @@
 package pkg
 
+import (
+	"errors"
+)
+
 const (
 	// RIGHT const
 	RIGHT direction = 1 + iota
@@ -12,6 +16,10 @@ const (
 )
 
 type direction int
+
+type coord struct {
+	x, y int
+}
 
 type snake struct {
 	body      []coord
@@ -27,8 +35,25 @@ func newSnake(d direction, b []coord) *snake {
 	}
 }
 
+func (s *snake) changeDirection(d direction) {
+	opposites := map[direction]direction{
+		RIGHT: LEFT,
+		LEFT:  RIGHT,
+		UP:    DOWN,
+		DOWN:  UP,
+	}
+
+	if o := opposites[d]; o != 0 && o != s.direction {
+		s.direction = d
+	}
+}
+
 func (s *snake) head() coord {
 	return s.body[len(s.body)-1]
+}
+
+func (s *snake) die() error {
+	return errors.New("Game over")
 }
 
 func (s *snake) move() error {
@@ -46,6 +71,10 @@ func (s *snake) move() error {
 		c.x++
 	}
 
+	if s.hits(c) {
+		return s.die()
+	}
+
 	if s.length > len(s.body) {
 		s.body = append(s.body, c)
 	} else {
@@ -55,15 +84,12 @@ func (s *snake) move() error {
 	return nil
 }
 
-func (s *snake) changeDirection(d direction) {
-	opposites := map[direction]direction{
-		RIGHT: LEFT,
-		LEFT:  RIGHT,
-		UP:    DOWN,
-		DOWN:  UP,
+func (s *snake) hits(c coord) bool {
+	for _, b := range s.body {
+		if b.x == c.x && b.y == c.y {
+			return true
+		}
 	}
 
-	if o := opposites[d]; o != 0 && o != s.direction {
-		s.direction = d
-	}
+	return false
 }

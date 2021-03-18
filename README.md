@@ -1,10 +1,10 @@
 ### Timeline
-#### 16-03-2021
+#### 16-03-2021 (30 mins)
 - cli                     
     made to take user input of height and width.
 - pkg                    
     created a base backbone of the game with a dynamic 2d array(height and width taken from user).
-#### 17-03-2021
+#### 17-03-2021 (2-3 hrs)
 - cli
     - clear.go                    
     added code to clear the cmd to render the sake.
@@ -17,13 +17,19 @@
         rendered the snake.
     - snake.go                    
         set up movement parameters for the snake.
-#### 18-03-2021
+#### 18-03-2021 (6-7 hrs)
 - pkg
     - game-state.go                    
         added keyboard events.
     - render.go                    
         added additional info.
     - snake.go                    
-        derectionalised movements of snake.
+        derectionalised movements of snake and collusion detection.
     - keyboard.go                    
         to get real-time keyboard inputs with [This Library](github.com/eiannone/keyboard).
+    - food.go                    
+        added food logic.
+- vendor                    
+    added vendor directory
+- Makefile                    
+    created makefile with run and format

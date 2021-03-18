@@ -10,18 +10,24 @@ type screen struct {
 }
 
 const (
-	snakeSymbol    = "*"
-	horizontalLine = "-"
+	snakeSymbol    = "◻"
+	horizontalLine = "█"
 	verticalLine   = "|"
 	emptySymbol    = " "
-	fieldTop       = 12
+	fieldTop       = 1
 	fieldLeft      = 1
 	move           = "Move:"
-	moveUsage      = "W,D,S,A"
+	moveUsage      = "W,A,S,D"
 	reset          = "Reset:"
 	resetUsage     = "R"
 	close          = "Close:"
 	closeUsage     = "ESC"
+	foodSymbol     = "⍟"
+	score          = "Score: "
+	round          = "Round: "
+	snakeLen       = "Snake Length: "
+	snakeLoc       = "Snake Location: "
+	gameOver       = "Game over!"
 )
 
 func (g *GameState) render() error {
@@ -36,10 +42,11 @@ func (g *GameState) render() error {
 
 func (g *GameState) generateScreen() *screen {
 	m := new(screen)
-	m.renderInfo(g.board)
-	m.renderAddInfo(g.board)
+	renderHelp()
+	renderInfo(g.score, g.round, g.board.snake.length, g.board.snake.head())
 	m.renderArena(g.board, g)
 	m.renderSnake(g.board.snake)
+	m.renderFood(g.board.food.x, g.board.food.y, g.board.height, g.board.width)
 	return m
 }
 
@@ -49,7 +56,19 @@ func (m *screen) renderArena(a *board, g *GameState) {
 
 	// Render battlefield
 	for i := 0; i < a.height; i++ {
-		m.cells = append(m.cells, strings.Split(verticalLine+strings.Repeat(emptySymbol, a.width)+verticalLine, ""))
+		if i == 1 && g.isOver {
+			row := []string{verticalLine, emptySymbol}
+			for _, r := range gameOver {
+				row = append(row, string(r))
+			}
+			for j := len(gameOver) + 1; j < a.width; j++ {
+				row = append(row, emptySymbol)
+			}
+			row = append(row, verticalLine)
+			m.cells = append(m.cells, row)
+		} else {
+			m.cells = append(m.cells, strings.Split(verticalLine+strings.Repeat(emptySymbol, a.width)+verticalLine, ""))
+		}
 	}
 
 	// Add horizontal line on bottom
@@ -62,24 +81,15 @@ func (m *screen) renderSnake(s *snake) {
 	}
 }
 
-func (m *screen) renderInfo(a *board) {
-	m.cells = append(m.cells, renderString(move))
-	m.cells = append(m.cells, renderString(moveUsage))
-	m.cells = append(m.cells, []string{})
-	m.cells = append(m.cells, renderString(reset))
-	m.cells = append(m.cells, renderString(resetUsage))
-	m.cells = append(m.cells, []string{})
-}
-func (m *screen) renderAddInfo(a *board) {
-	m.cells = append(m.cells, renderString(close))
-	m.cells = append(m.cells, renderString(closeUsage))
-	m.cells = append(m.cells, []string{})
-}
-func (m *screen) renderString(s string) {
-	row := renderString(s)
-	m.cells = append(m.cells, row)
+func (m *screen) renderFood(x, y, h, w int) {
+	m.cells[x+fieldTop][y+fieldLeft] = foodSymbol
 }
 
-func renderString(s string) []string {
-	return strings.Split(s, "")
+func renderHelp() {
+	fmt.Printf("%v %v    %v %v    %v %v\n", move, moveUsage, reset, resetUsage, close, closeUsage)
+}
+
+func renderInfo(scoreVal, roundVal, snakeLenVal int, snakeCood coord) {
+	fmt.Printf("%s %d    %s %d\n", score, scoreVal, round, roundVal)
+	fmt.Printf("%s %d    %s %d\n", snakeLen, snakeLenVal, snakeLoc, snakeCood)
 }
