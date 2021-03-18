@@ -4,3 +4,6 @@ run: ## Run the code
 format: ## Formats the code. Must have goimports installed
 	goimports -w -local github.com/ersonp/go-snake ./cmd
 	goimports -w -local github.com/ersonp/go-snake ./pkg
+
+test:
+	go test ./... -bench=.

@@ -1,4 +1,28 @@
-### Timeline
+# Go Snek
+
+Terminal-based Snake game in GO
+
+![screenshot](https://imgur.com/JlPDudF)
+
+## Play
+
+### Locally
+
+```
+make run
+```
+## Testing
+
+```
+make test
+```
+## Formatting
+
+```
+make format
+```
+
+## Timeline
 #### 16-03-2021 (30 mins)
 - cli                     
     made to take user input of height and width.
