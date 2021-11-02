@@ -50,7 +50,7 @@ make format
     - snake.go                    
         derectionalised movements of snake and collusion detection.
     - keyboard.go                    
-        to get real-time keyboard inputs with [This Library](github.com/eiannone/keyboard).
+        to get real-time keyboard inputs with [This Library](https://github.com/eiannone/keyboard).
     - food.go                    
         added food logic.
 - vendor                    
